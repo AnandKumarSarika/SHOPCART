@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { BsUpload } from "react-icons/bs";
 import { imagetoBase64 } from "../utility/imagetoBase64";
 import { toast } from "react-hot-toast";
+import LeftNav from "../Navbar";
 
 //This file deals with uploading of products to the database and its front end view{admin}
 const Newproduct = () => {
+  const list = [{link:"admin-home",value:"Home"},{link:"newproduct",value:"Add Product"},{link:"all-orders",value:"All Orders"},{link:"login",value:"Logout"}]
   const [data, setData] = useState({
     name: "",
     category: "",
@@ -74,6 +76,7 @@ const Newproduct = () => {
   return (
     //new product form
     <div className="p-4">
+      <LeftNav options = {list}/>
       <form
         className="m-auto w-full max-w-md shadow flex flex-col p-3 bg-white"
         onSubmit={handleSubmit}

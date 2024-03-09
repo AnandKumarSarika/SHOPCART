@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Allproduct from "../component/Allproduct";
 import { addCartItems } from "../redux/productSlice";
 
-//This file contains the menu page
+
 const Menu = () => {
   const { filterby } = useParams();
   const productData = useSelector((state) => state.product.productList);
@@ -31,9 +31,10 @@ const Menu = () => {
           <img
             src={productDisplay.image}
             className="hover:scale-105 transition-all"
+            style={{width:"90%",height:"90%"}}
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2" style={{marginLeft:"20px"}}>
           <h3 className="font-bold text-slate-600 capitalize text-lg md:text-4xl">
             {productDisplay.name}
           </h3>

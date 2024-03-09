@@ -1,22 +1,59 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addCartItems } from "../redux/productSlice";
+//import { addCartItems } from "../redux/productSlice";
+import { FcLikePlaceholder } from "react-icons/fc";
 
-
-//This file deals with displaying other products(vegetables) in the home page
-//loading props
 const CardFeature = ({ image, name, price, category, loading, id}) => {
-const dispatch = useDispatch()
-const addCartProduct =(e)=>{
-  dispatch(addCartItems(  {
-    _id : id,
-    name : name,
-    price : price,
-    category: category,
-    image : image
-  }))
-}
+//const dispatch = useDispatch()
+const addCartProduct = async () => {
+  try {
+    const userId = localStorage.getItem("id");
+    const productId = id;
+    const response = await fetch("http://localhost:8080/addToCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      mode:"cors",
+      body: JSON.stringify({
+        userId,
+        productId,
+        quantity: 1, // You might want to dynamically set the quantity
+      }),
+    });
+
+    const result = await response.json();
+    console.log(result)
+    alert("Product has added to Cart")
+
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+  }
+};
+const addToWhishList = async () => {
+  try {
+    const userId = localStorage.getItem("id");
+    const productId = id;
+    const response = await fetch("http://localhost:8080/wishlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      mode:"cors",
+      body: JSON.stringify({
+        userId,
+        productId // You might want to dynamically set the quantity
+      }),
+    });
+
+    const result = await response.json();
+    console.log(result)
+    alert("Product Added to WhishList")
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+  }
+};
   return (
     <div className="w-full  min-w-[235px] max-w-[235px] bg-white hover:shadow-lg drop-shadow-lg py-3 px-4 cursor-pointer flex flex-col">
       {image ? (
@@ -27,6 +64,9 @@ const addCartProduct =(e)=>{
                alt = ""
               className="h-full" />
             </div>
+            <h4 style={{display:"flex", marginTop:"20px"}} onClick={addToWhishList}>
+            <FcLikePlaceholder style={{fontSize:"25px", marginLeft:"20%"}}/> WhishList
+            </h4>
             <h3 className="font-semibold text-slate-600 capitalize text-lg text-center mt-2 whitespace-nowrap overflow-hidden">
               {name}
             </h3>

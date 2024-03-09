@@ -1,0 +1,51 @@
+.left-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 40px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    transition: width 0.3s ease;
+  }
+  
+  .menu-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-top: 10px;
+    margin-left: 5px;
+    
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 40px;
+    margin-top:30%;
+  }
+  
+  .option {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: whitesmoke;
+    text-decoration: none;
+  }
+  
+  .option:hover {
+    color: gray;
+  }
+  
+  .left-nav.open {
+    width: 200px;
+  }
+  

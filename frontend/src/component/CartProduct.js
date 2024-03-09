@@ -3,15 +3,86 @@ import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import {
-  deleteCartItems,
-  increaseQty,
   decreaseQty,
 } from "../redux/productSlice";
 
-//This file deals with cart product checkout->increase or decrease no of products or delete products
 
-const CartProduct = ({ id, name, image, category, price, qty, total }) => {
+
+const CartProduct = ({ id, name, image, category, price, qty, total ,fun}) => {
   const dispatch = useDispatch();
+  const deleteCartProduct = async () => {
+    try {
+      const userId = localStorage.getItem("id");
+      const productId = id;
+      const response = await fetch("http://localhost:8080/removeFromCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+          quantity: 1, // You might want to dynamically set the quantity
+        }),
+      });
+      const result = await response.json();
+      console.log(result)
+      fun()
+      // Dispatch the action based on the API response
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
+  const increaseCartProduct = async () => {
+    try {
+      const userId = localStorage.getItem("id");
+      const productId = id;
+      const response = await fetch("http://localhost:8080/increaseQuantity", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+        }),
+      });
+      const result = await response.json();
+      fun()
+      console.log(result)
+      // Dispatch the action based on the API response
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
+  const decreaseCartProduct = async () => {
+    try {
+      const userId = localStorage.getItem("id");
+      const productId = id;
+      const response = await fetch("http://localhost:8080/decreaseQuantity", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+        }),
+      });
+      const result = await response.json();
+      fun()
+      console.log(result)
+      // Dispatch the action based on the API response
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
   return (
     <div className="bg-slate-200 p-3 flex gap-4 border border-slate-400">
       <div className="bg-white p-2">
@@ -25,7 +96,7 @@ const CartProduct = ({ id, name, image, category, price, qty, total }) => {
           {/**delete product */}
           <div
             className="cursor-pointer text-lg text-slate-800 hover:text-red-400"
-            onClick={() => dispatch(deleteCartItems(id))}
+            onClick={deleteCartProduct}
           >
             <AiFillDelete />
           </div>
@@ -37,14 +108,14 @@ const CartProduct = ({ id, name, image, category, price, qty, total }) => {
             {/**add or reduce products */}
             <button
               className="bg-slate-300 hover:bg-yellow-600 text-white font-bold p-1"
-              onClick={() => dispatch(increaseQty(id))}
+              onClick={increaseCartProduct}
             >
               <AiOutlinePlus />
             </button>
             <p>{qty}</p>
             <button
               className="bg-slate-300 hover:bg-yellow-600 text-white font-bold p-1"
-              onClick={() => dispatch(decreaseQty(id))}
+              onClick={decreaseCartProduct}
             >
               <AiOutlineMinus />
             </button>

@@ -14,10 +14,18 @@ import Signup from './pages/Signup';
 import { store } from './redux/index';
 import { Provider } from "react-redux";
 import Cart from './pages/Cart';
+import WishlistPage from './pages/wishList';
+import Orders from './pages/myOrders';
+import AdminPage from './AdminPage';
+import OrderDetails from './AllOrders';
 
 // this file deals with the routes 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    <>
+    <Route path = "admin-home" element = {<AdminPage/>}/>
+    <Route path ='newproduct' element = {<Newproduct/>}/>
+    <Route path = "all-orders" element = {<OrderDetails/>}/>
     <Route path = '/' element = {<App/>}>
       <Route index element = {<Home/>}/>
       {/**<Route path ='menu' element = {<Menu/>}/>*/}
@@ -25,10 +33,12 @@ const router = createBrowserRouter(
       <Route path ='about' element = {<About/>}/>
       <Route path ='contact' element = {<Contact/>}/>
       <Route path ='login' element = {<Login/>}/>
-      <Route path ='newproduct' element = {<Newproduct/>}/>
       <Route path ='signup' element = {<Signup/>}/>
       <Route path ='cart' element = {<Cart/>}/>
+      <Route path = "wish-list" element = {<WishlistPage/>}/>
+      <Route path = "my-orders" element = {<Orders/>}/>
     </Route>
+    </>
   )
 )
 const root = ReactDOM.createRoot(document.getElementById('root'));

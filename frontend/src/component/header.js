@@ -14,43 +14,51 @@ const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const userData = useSelector((state) => state.user);
 
+
   const dispatch = useDispatch();
   const handleShowMenu = () => {
     setShowMenu((preve) => !preve);
   };
   const handleLogout = () => {
+    localStorage.removeItem("id")
     dispatch(logoutRedux());
+   
     toast("logging out");
   };
   console.log(process.env.REACT_APP_ADMIN_EMAIL);
-  const cartItemNumber = useSelector((state)=>state.product.cartItem)
+  const id = localStorage.getItem("id")
+  //const cartItemNumber = useSelector((state)=>state.product.cartItem)
   return (
     /*logo*/
-    <header className="fixed shadow-md w-full h-14 px-2 md:px-4 bg-white ">
+    <header className="shadow-md w-full h-14 px-2 md:px-4 bg-white ">
       {/*for desktop view */}
       <div className="flex items-center justify-between">
         <Link to={""}>
           <div className="h-10">
-            <img src={logo} alt = 'company logo'className="h-full" />
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREafc-RtdlfPswBQ-jBIy6D8EYf7Dodcnpgw&usqp=CAU" alt = 'company logo'className="h-full" style={{marginTop:"10px"}}/>
           </div>
         </Link>
         {/*desktop navigation bar*/}
         <div className="flex items-center gap-3 md:gap-6">
           <nav className=" hidden md:flex gap-3 md:gap-6 text-base md:text-lg ">
             <Link to={""}>Home</Link>
-            <Link to={"menu/64a537d06e2f4035d6ef9721"}>Menu</Link>
             <Link to={"about"}>About</Link>
             <Link to={"contact"}>Contact</Link>
+            {id && <Link to={"wish-list"}>Wishlist</Link> }
+            {id && <Link to={"my-orders"}>MyOrders</Link>}
           </nav>
-          <div className="text-2xl relative">
+          {id && (
+            <div className="text-2xl relative">
             <Link to={"cart"}>
             <BsCart4 />
             {/* user profile*/}
-            <div className="absolute -top-2 -right-1 text-white bg-red-600 h-4 w-4 rounded-full m-0 p-0 text-sm text-center">
-              {cartItemNumber.length}
-            </div>
+            {/* <div className="absolute -top-2 -right-1 text-white bg-red-600 h-4 w-4 rounded-full m-0 p-0 text-sm text-center">
+              {cartProducts.length}
+            </div> */}
             </Link>
           </div>
+          )}
+          
           <div className="text-slate-600 " onClick={handleShowMenu}>
             <div className=" text-2xl p-1 cursor-pointer h-8 w-8 overflow-hidden drop-shadow-md  ">
               {userData.image ? (
@@ -69,18 +77,14 @@ const Header = () => {
                     New Product
                   </Link>
                 )}
-                {userData.image ? (
-                  <p className="cursor-pointer" onClick={handleLogout}>
-                    Logout ({userData.firstName})
-                  </p>
-                ) : (
                   <Link
                     to={"login"}
                     className="whitespace-nowrap cursor-pointer"
+                    onClick={handleLogout}
                   >
-                    Login
+                    {localStorage.getItem("id") === null ? "Login":"Logout"}
                   </Link>
-                )}
+  
                 {/**mobile navigation */}
                 <nav className="text-base md:text-lg flex flex-col md:hidden">
                   <Link to={""} className="px-2 py-1">
