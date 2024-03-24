@@ -18,6 +18,7 @@ import WishlistPage from './pages/wishList';
 import Orders from './pages/myOrders';
 import AdminPage from './AdminPage';
 import OrderDetails from './AllOrders';
+import SaveItForLater from './pages/saveItForLater';
 
 // this file deals with the routes 
 const router = createBrowserRouter(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path ='cart' element = {<Cart/>}/>
       <Route path = "wish-list" element = {<WishlistPage/>}/>
       <Route path = "my-orders" element = {<Orders/>}/>
+      <Route path = "save-it-for-later" element = {<SaveItForLater/>}/>
     </Route>
     </>
   )

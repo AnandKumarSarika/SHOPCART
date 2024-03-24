@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
+import { BsFillSave2Fill } from "react-icons/bs";
 import {
   decreaseQty,
 } from "../redux/productSlice";
@@ -34,7 +35,6 @@ const CartProduct = ({ id, name, image, category, price, qty, total ,fun}) => {
       console.error("Error adding product to cart:", error);
     }
   };
-
   const increaseCartProduct = async () => {
     try {
       const userId = localStorage.getItem("id");
@@ -83,6 +83,31 @@ const CartProduct = ({ id, name, image, category, price, qty, total ,fun}) => {
     }
   };
 
+  const saveItForLater = async() =>{
+      try{
+        const userId = localStorage.getItem("id");
+        const productId = id;
+        const response = await fetch(`http://localhost:8080/move-to-saved`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+        }),
+      });
+      const result = await response.json();
+      fun()
+      console.log(result)
+      // Dispatch the action based on the API response
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+      }
+
+
   return (
     <div className="bg-slate-200 p-3 flex gap-4 border border-slate-400">
       <div className="bg-white p-2">
@@ -125,10 +150,11 @@ const CartProduct = ({ id, name, image, category, price, qty, total ,fun}) => {
             <p className="text-red-400">
               {total}
               <span className="text-red-500">/-</span>
-            </p>
+            </p><br/>
           </div>
         </div>
       </div>
+      <button style = {{fontSize:"15px",fontWeight:"700",marginTop:"0px",cursor:"pointer",marginTop:"-110px"}} onClick={saveItForLater}><BsFillSave2Fill/></button>
     </div>
   );
 };

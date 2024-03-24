@@ -46,6 +46,7 @@ const Header = () => {
             <Link to={"contact"}>Contact</Link>
             {id && <Link to={"wish-list"}>Wishlist</Link> }
             {id && <Link to={"my-orders"}>MyOrders</Link>}
+            {id && <Link to={"save-it-for-later"}>Saved Products</Link>}
           </nav>
           {id && (
             <div className="text-2xl relative">

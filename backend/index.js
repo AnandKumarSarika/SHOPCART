@@ -57,7 +57,15 @@ const userSchema = mongoose.Schema({
       },
       quantity: Number,
     },
-  ]
+  ],
+  savedForLater: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product',
+      },
+    },
+  ],
 });
 
 //model
@@ -243,7 +251,6 @@ app.post("/removeFromCart", async (req, res) => {
   }
 });
 
-
 app.post("/wishlist", async (req, res) => {
   const { userId, productId} = req.body;
 
@@ -316,6 +323,29 @@ app.get('/get-wishlist', async (req, res) => {
     }
 
     const cartItems = user.wishlist.map((Item) => ({
+      product: Item.productId,
+    }));
+    res.json(cartItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", alert: false });
+  }
+});
+
+app.get('/get-save-it-for-later', async (req, res) => {
+  const userId = req.query.userId;
+  try {
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required", alert: false });
+    }
+
+    const user = await userModel.findById(userId).populate("savedForLater.productId");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found", alert: false });
+    }
+
+    const cartItems = user.savedForLater.map((Item) => ({
       product: Item.productId,
     }));
     res.json(cartItems);
@@ -410,7 +440,6 @@ app.post('/add-to-myorders', async (req, res) => {
 
 app.post("/getOrders", async (req, res) => {
   const {userId} = req.body;
-  console.log(userId)
   try {
     if (!userId) {
       return res.status(400).json({ message: "User ID is required", alert: false });
@@ -432,6 +461,34 @@ app.post("/getOrders", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", alert: false });
   }
 });
+
+app.put('/move-to-saved', async (req, res) => {
+  try {
+    const {userId,productId} = req.body;
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const productIndex = user.cart.findIndex(item => item.productId.toString() === productId);
+
+    if (productIndex !== -1) {
+      const removedProduct = user.cart.splice(productIndex, 1)[0];
+      user.savedForLater.push(removedProduct);
+      await user.save();
+
+      return res.status(200).json({ message: 'Product moved to saved for later successfully', user });
+    } else {
+      return res.status(404).json({ message: 'Product not found in cart' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // app.post('/place-order', async (req, res) => {
 //   const { userId } = req.body;

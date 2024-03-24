@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-const WishlistPage = () => {
-  const [wishlist, setWishlist] = useState([]);
+const SaveItForLater = () => {
+  const [saveItForLater, setSaveItForLater] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchWishlist = async () => {
     const userId = localStorage.getItem("id");
     try {
-      const response = await fetch(`http://localhost:8080/get-wishlist?userId=${userId}`);
+      const response = await fetch(`http://localhost:8080/get-save-it-for-later?userId=${userId}`);
       const data = await response.json();
-      setWishlist(data);
+      setSaveItForLater(data);
     } catch (error) {
       console.error('Error fetching wishlist:', error);
     } finally {
@@ -52,11 +52,11 @@ const WishlistPage = () => {
       <h1 style={{ color: 'darkblue',fontWeight:"bolder",fontSize:"36px" }}>Wishlist</h1>
       {loading ? (
         <p>Loading...</p>
-      ) : wishlist.length === 0 ? (
+      ) : saveItForLater.length === 0 ? (
         <p>No products in Wishlist</p>
       ) : (
         <div className="wishlist-container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-          {wishlist.map((product) => {
+          {saveItForLater.map((product) => {
             console.log(product.product)
             return(
             <div
@@ -102,4 +102,4 @@ const WishlistPage = () => {
   );
 };
 
-export default WishlistPage;
+export default SaveItForLater;
