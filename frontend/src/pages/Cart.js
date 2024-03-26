@@ -56,7 +56,6 @@ const placeOrder = async () => {
       });
       const result = await response.json();
       console.log(result)
-      alert("Your has Placed Successfully")
       fetchCartProducts()
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -68,30 +67,38 @@ const placeOrder = async () => {
     fetchCartProducts();
   }, []);
 
-  // Handle payment using Stripe
   const handlePayment = async () => {
-    if (user.email) {
-      const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-      const res = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/payment`, {
-        method: "POST",
+  if (user.email) {
+    try {
+      const response = await fetch('http://localhost:8080/payment', {
+        method: 'POST',
         headers: {
-          "content-type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(cartProducts),
+        body: JSON.stringify(cartProducts), // Assuming cartProducts is an array of items
       });
 
-      if (res.statusCode === 500) return;
+      if (!response.ok) {
+        throw new Error('Failed to initiate payment');
+      }
 
-      const data = await res.json();
-      toast("Redirect to payment Gateway...!");
-      stripePromise.redirectToCheckout({ sessionId: data });
-    } else {
-      toast("You have not logged in!");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
+      const responseData = await response.json();
+      const sessionId = responseData.sessionId; // Access sessionId property
+      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+      stripe.redirectToCheckout({ sessionId });
+      placeOrder()
+    } catch (error) {
+      console.error('Error handling payment:', error);
+      toast.error('Failed to initiate payment');
     }
-  };
+  } else {
+    toast.error('You have not logged in!');
+    setTimeout(() => {
+      localStorage.removeItem("id")
+      navigate('/login');
+    }, 1000);
+  }
+};
 
   return (
     <div>
@@ -100,7 +107,6 @@ const placeOrder = async () => {
       </h2>
       {cartProducts[0] ? (
         <div className="md:flex gap-5">
-          {/* Display cart products */}
           <div className="w-full max-w-2xl my-4 rounded">
             {cartProducts.map((el) => (
               <CartProduct
@@ -129,7 +135,7 @@ const placeOrder = async () => {
               <p>Total Price:</p>
               <p className="ml-auto font-bold w-28">
                 {totalPrice}
-                <span className="text-red-500">$</span>
+                <span className="text-red-500">RS</span>
               </p>
             </div>
             <div className="flex justify-center">

@@ -10,8 +10,8 @@ const Menu = () => {
   const productData = useSelector((state) => state.product.productList);
   const dispatch = useDispatch();
   const productDisplay = productData.filter((el) => el._id === filterby)[0];
-  console.log(productDisplay);
-  //test case for productDisplay
+  const id = productDisplay._id
+ 
   if (!productDisplay) {
     return (
       <div className="flex justify-center mt-10  font-bold text-2xl text-orange-600">
@@ -19,10 +19,31 @@ const Menu = () => {
       </div>
     );
   }
-  //add to cart in menu
-
-  const addCartProduct = (e) => {
-    dispatch(addCartItems(productDisplay));
+  const addCartProduct = async () => {
+    console.log(id)
+    try {
+      const userId = localStorage.getItem("id");
+      const productId = id;
+      const response = await fetch("http://localhost:8080/addToCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+          quantity: 1,
+        }),
+      });
+  
+      const result = await response.json();
+      console.log(result)
+      alert("Product has added to Cart")
+  
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
   };
   return (
     <div className="p-2 md:py-4">
@@ -32,6 +53,7 @@ const Menu = () => {
             src={productDisplay.image}
             className="hover:scale-105 transition-all"
             style={{width:"90%",height:"90%"}}
+            alt = "prop"
           />
         </div>
         <div className="flex flex-col gap-2" style={{marginLeft:"20px"}}>
@@ -45,9 +67,6 @@ const Menu = () => {
             {productDisplay.price}
           </p>
           <div className=" flex gap-3">
-            <button className="bg-yellow-300 hover:bg-yellow-600 text-white font-bold min-w-[100px] p-1">
-              Buy Now
-            </button>
             <button
               onClick={addCartProduct}
               className="bg-yellow-300 hover:bg-yellow-600 text-white font-bold min-w-[100px] p-1"

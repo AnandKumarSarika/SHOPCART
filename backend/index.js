@@ -105,7 +105,6 @@ app.post("/login", async (req, res) => {
       email: result.email,
       image: result.image,
     };
-    console.log(dataSend);
     res.send({ message: "login is successful", alert: true, data: dataSend });
   } else {
     res.send({
@@ -216,6 +215,7 @@ app.post("/addToCart", async (req, res) => {
       user.cart.push({ productId, quantity });
     }
 
+    console.log(user.cart)
     await user.save();
 
     res.send({ message: "Product added to cart successfully", alert: true });
@@ -245,6 +245,58 @@ app.post("/removeFromCart", async (req, res) => {
     await user.save();
 
     res.json({ message: "Product removed from cart successfully", alert: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", alert: false });
+  }
+});
+
+app.post("/removeFromWishlist", async (req, res) => {
+  const { userId, productId } = req.body;
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", alert: false });
+    }
+
+    const index = user.wishlist.findIndex(item => item.productId.equals(productId));
+
+    if (index === -1) {
+      return res.status(404).json({ message: "Product not found in Wishlist", alert: false });
+    }
+
+    user.wishlist.splice(index, 1);
+
+    await user.save();
+
+    res.json({ message: "Product removed from WishList successfully", alert: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", alert: false });
+  }
+});
+
+app.post("/removeFromSaved", async (req, res) => {
+  const { userId, productId } = req.body;
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", alert: false });
+    }
+
+    const index = user.savedForLater.findIndex(item => item.productId.equals(productId));
+
+    if (index === -1) {
+      return res.status(404).json({ message: "Product not found in Saved Products", alert: false });
+    }
+
+    user.savedForLater.splice(index, 1);
+
+    await user.save();
+
+    res.json({ message: "Product removed from Saved Products successfully", alert: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", alert: false });
@@ -554,41 +606,33 @@ app.put('/move-to-saved', async (req, res) => {
 //console.log((process.env.STRIPE_SECRET_KEY))
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 app.post("/payment", async(req,res)=>{
-  //console.log(req.body)
   try {
-  const params = {
-    submit_type : 'pay',
-    mode : "payment",
-    payment_method_types : ['card'],
-    billing_address_collection: "auto",
-    shipping_options : [{shipping_rate : "shr_1NVApEHeneEHcTX4Nx9tRyDU"}],
-
-    line_items : req.body.map((item)=>{
-    return{
-        price_data : {
-        currency : "usd",
-        product_data : {
-        name : item.name,
+    const lineItems = req.body.map(item => ({
+      price_data: {
+        currency: 'inr',
+        product_data: {
+          name: item.product.name,
+          images: [item.product.image], // You can include images if needed
         },
-        unit_amount : item.price * 100,
+        unit_amount: parseFloat(item.product.price) * 100, // Convert price to cents
       },
-      adjustable_quantity : {
-        enabled : true,
-        minimum : 1,
-      },
-      quantity : item.qty
-    }
-  }),
-  success_url : `${process.env.FRONTEND_URL}/success`,
-  cancel_url : `${process.env.FRONTEND_URL}/cancel`,
+      quantity: item.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+
+    res.status(200).json({ sessionId: session.id });
+  } catch (error) {
+    console.error('Error creating checkout session:', error);
+    res.status(500).json({ error: 'Failed to create checkout session' });
   }
-  const session = await stripe.checkout.sessions.create(params)
-  res.status(200).json(session.id)
-  }
-  catch (error) {
-    res.status(error.statusCode || 500).json(error.message)
-  }
-})
+});
 
 
 app.listen(PORT, () => console.log("Server is running at port : " + PORT));

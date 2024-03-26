@@ -47,9 +47,34 @@ const SaveItForLater = () => {
     }
   };
 
+  const deleteProduct = async (id) => {
+    console.log(id)
+    try {
+      const userId = localStorage.getItem("id");
+      const productId = id;
+      const response = await fetch("http://localhost:8080/removeFromSaved", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode:"cors",
+        body: JSON.stringify({
+          userId,
+          productId,
+        }),
+      });
+      const result = await response.json();
+      console.log(result)
+      fetchWishlist()
+      // Dispatch the action based on the API response
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h1 style={{ color: 'darkblue',fontWeight:"bolder",fontSize:"36px" }}>Wishlist</h1>
+      <h1 style={{ color: 'darkblue',fontWeight:"bolder",fontSize:"36px" }}>Saved Products</h1>
       {loading ? (
         <p>Loading...</p>
       ) : saveItForLater.length === 0 ? (
@@ -93,6 +118,11 @@ const SaveItForLater = () => {
                  onClick={() => addCartProduct(product.product._id)}
                 >
                 Add to Cart
+            </button>
+            <button style={{marginTop:"10%", backgroundColor:"yellow", padding:"10px",alignSelf:"center",borderRadius:"9px"}}
+                 onClick={() => deleteProduct(product.product._id)}
+                >
+                Remove
             </button>
             </div>
           )})}
