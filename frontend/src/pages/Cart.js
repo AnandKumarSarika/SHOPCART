@@ -85,7 +85,19 @@ const placeOrder = async () => {
       const responseData = await response.json();
       const sessionId = responseData.sessionId; // Access sessionId property
       const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-      stripe.redirectToCheckout({ sessionId });
+      stripe.redirectToCheckout({ sessionId })
+        .then(result => {
+          if (result.error) {
+            throw new Error(result.error.message);
+          } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+            // Payment succeeded, call placeOrder()
+            placeOrder(); // Call your placeOrder function here
+          }
+        })
+        .catch(error => {
+          console.error('Error handling payment:', error);
+          toast.error('Failed to initiate payment');
+        });
       placeOrder()
     } catch (error) {
       console.error('Error handling payment:', error);

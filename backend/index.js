@@ -609,7 +609,7 @@ app.post("/payment", async(req,res)=>{
   try {
     const lineItems = req.body.map(item => ({
       price_data: {
-        currency: 'inr',
+        currency: 'usd',
         product_data: {
           name: item.product.name,
           images: [item.product.image], // You can include images if needed
@@ -623,8 +623,8 @@ app.post("/payment", async(req,res)=>{
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.FRONTEND_URL}/success`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      success_url: `${process.env.FRONTEND_URL}my-orders`,
+      cancel_url: `${process.env.FRONTEND_URL}cancel`,
     });
 
     res.status(200).json({ sessionId: session.id });
