@@ -3,7 +3,7 @@ import React from 'react';
 const About = () => {
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '10px' }}>🛍️ About Our Ecommerce Store 🌟</h2>
+      <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '10px' }}>🛍️ About Our Store SHOPCART 🌟</h2>
       <p style={{ fontSize: '16px', lineHeight: '1.6' }}>
         Welcome to our online store! We're not just a store; we're your one-stop destination for all things awesome! 🎉 Explore the latest trends in fashion, gadgets, home
         essentials, and much more, all at pocket-friendly prices.

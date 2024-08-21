@@ -99,15 +99,17 @@ const Newproduct = () => {
           value={data.category}
         >
           <option value={"other"}>select category</option>
-          <option value={"fruits"}>Fruits</option>
-          <option value={"vegetables"}>Vegetables</option>
-          <option value={"icecream"}>Icecream</option>
-          <option value={"dosa"}>Dosa</option>
-          <option value={"pizza"}>pizza</option>
-          <option value={"rice"}>rice </option>
-          <option value={"cake"}>cake</option>
-          <option value={"burger"}>burger</option>
-          <option value={"sandwich"}>sandwich</option>
+          <option value={"fashion"}>Fashion</option>
+          <option value={"Electronics"}>Electronics</option>
+          <option value={"Mobiles"}>Mobiles</option>
+          <option value={"Home"}>Home</option>
+          <option value={"Sports"}>Sports</option>
+          <option value={"Furniture"}>Furniture </option>
+          <option value={"Books"}>Books</option>
+          <option value={"Toys"}>Toys</option>
+          <option value={"Travel"}>Travel</option>
+          <option value={"Gym"}>Gym</option>
+
         </select>
 
         <label htmlFor="image">

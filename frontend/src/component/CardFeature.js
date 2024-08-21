@@ -49,7 +49,7 @@ const addToWhishList = async () => {
 
     const result = await response.json();
     console.log(result)
-    alert("Product Added to WhishList")
+    alert("Product Added to WishList")
   } catch (error) {
     console.error("Error adding product to cart:", error);
   }
@@ -65,7 +65,7 @@ const addToWhishList = async () => {
               className="h-full" />
             </div>
             <h4 style={{display:"flex", marginTop:"20px"}} onClick={addToWhishList}>
-            <FcLikePlaceholder style={{fontSize:"25px", marginLeft:"20%"}}/> WhishList
+            <FcLikePlaceholder style={{fontSize:"25px", marginLeft:"20%"}}/> WishList
             </h4>
             <h3 className="font-semibold text-slate-600 capitalize text-lg text-center mt-2 whitespace-nowrap overflow-hidden">
               {name}

@@ -147,7 +147,7 @@ const placeOrder = async () => {
               <p>Total Price:</p>
               <p className="ml-auto font-bold w-28">
                 {totalPrice}
-                <span className="text-red-500">RS</span>
+                <span className="text-red-500"> Rs</span>
               </p>
             </div>
             <div className="flex justify-center">
@@ -163,7 +163,7 @@ const placeOrder = async () => {
                 className="bg-yellow-300 hover:bg-orange-600 text-white font-bold py-1 px-2 mt-2 w-48"
                 onClick={placeOrder}
               >
-                Place Order
+                Place Order (COD)
               </button>
             </div>
           </div>

@@ -66,6 +66,8 @@ const Login = () => {
           navigate("/")
         },1000);
         //console.log(userData)
+      }else{
+        alert("Invalid Details ")
       }
     }
     else{

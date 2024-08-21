@@ -11,7 +11,7 @@ const SimpleSlider = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,       // Enable autoplay
-    autoplaySpeed: 200,
+    autoplaySpeed: 100,
   };
 
   return (

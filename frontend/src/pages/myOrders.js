@@ -73,7 +73,7 @@ const Orders = () => {
               />
               <h3 style={{ color: 'darkgreen', margin: '10px 0' }}>{product.product.name}</h3>
               <p>{product.product.category}</p>
-              <p>${product.product.price}</p>
+              <p>{product.product.price}/-</p>
             </div>
           )})}
         </div>

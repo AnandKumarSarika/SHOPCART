@@ -95,9 +95,13 @@ const Allproduct = ({ heading }) => {
           className="p-2 border border-gray-300 rounded"
         >
           <option value="">Select Price Range</option>
-          <option value="0-50">$0 - $50</option>
-          <option value="51-100">$51 - $100</option>
-          <option value="101-200">$101 - $200</option>
+          <option value="100 - 1000">100 - 1000</option>
+          <option value="1001-2000">1001 - 2000</option>
+          <option value="2001-3000">2001 - 3000</option>
+          <option value="3001-4000">3001 - 4000</option>
+          <option value="4001-10000">4001 - 10000</option>
+
+
           {/* Add more price ranges as needed */}
         </select>
       </div>

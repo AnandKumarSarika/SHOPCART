@@ -112,7 +112,7 @@ const WishlistPage = () => {
               />
               <h3 style={{ color: 'darkgreen', margin: '10px 0' }}>{product.product.name}</h3>
               <p>{product.product.category}</p>
-              <p>${product.product.price}</p>
+              <p>Rs.{product.product.price}</p>
               <button style={{marginTop:"10%", backgroundColor:"yellow", padding:"10px",alignSelf:"center",borderRadius:"9px"}}
                  onClick={() => addCartProduct(product.product._id)}
                 >

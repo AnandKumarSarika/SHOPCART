@@ -19,7 +19,7 @@ console.log(process.env.MONGODB_URL);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("connected to Database successfully"))
-  .catch((error) => console.log("error in connection to Database"));
+  .catch((error) => console.log(error));
 
 //Schema
 const userSchema = mongoose.Schema({

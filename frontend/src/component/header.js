@@ -35,9 +35,15 @@ const Header = () => {
       <div className="flex items-center justify-between">
         <Link to={""}>
           <div className="h-10">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREafc-RtdlfPswBQ-jBIy6D8EYf7Dodcnpgw&usqp=CAU" alt = 'company logo'className="h-full" style={{marginTop:"10px"}}/>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREafc-RtdlfPswBQ-jBIy6D8EYf7Dodcnpgw&usqp=CAU" alt = 'company logo'className="h-full" style={{marginTop:"10px",marginLeft:"50px"}}/>
           </div>
         </Link>
+        <Link to={""}>
+          <div className="h-10">
+            <img src="https://www.coolgenerator.com/Data/Textdesign/202403/6401e18e2e144e3c38582da6f34980e4.png" alt = 'company logo'className="h-full" style={{marginTop:"10px",marginLeft:"0px"}}/>
+          </div>
+        </Link>
+        
         {/*desktop navigation bar*/}
         <div className="flex items-center gap-3 md:gap-6">
           <nav className=" hidden md:flex gap-3 md:gap-6 text-base md:text-lg ">
